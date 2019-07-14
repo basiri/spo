@@ -1,7 +1,7 @@
 # Workforce Optimization Tool
 ## About the solution
-The problem does not have a single mathematical answer; therefore, a heuristic algorithm such as the genetic algorithm could be an appropriate solution. The fitness of answers is based on the minimum workforce in structure. Mutation and gene removing altered in order to get the fast answer and because of the simplicity of answers. Other factors for indicating a better solution can be implemented in the geneFitnessCalculator method.
-In the instruction file, is mentioned senior cleaners have a higher work capacity than Junior Cleaners, but there was no equivalency rate. In the application.properties the rates can be set.  Here is the default value:
+The problem does not have a single mathematical answer; therefore, a heuristic algorithm such as the genetic algorithm could be an appropriate solution. The fitness of answers is based on the minimum workforce in structure. Mutation and gene removing altered because of the simplicity of answers, in order to get the fast answer. Other factors for indicating a better solution can be implemented in the geneFitnessCalculator method.
+In the instruction file, is mentioned senior cleaners have a higher work capacity than Junior Cleaners, but there was no equivalency rate. In the application.properties the rates can be set.  Here is the default values:
 ```
 SPO.srRate=10
 SPO.jrRate=8
@@ -15,8 +15,8 @@ SPO.maxRoom=100
 SPO.minSeniorInStructure=1
 ```
 
-The test class using the same resource.
-Although we have just one rule for acceptance of an answer (at least one senior in structure), several rules might be added to valid answer policy. The place is indicated with //TODO 
+The test classs are using the same resource.
+Although there is just one rule for acceptance of an answer (at least one senior in structure), several rules might be added to valid answer policy. The place is indicated with //TODO 
 Custom input validation checked with javax.validation and  custom annotation has been implemented  for the related class in  spo\src\main\java\com\abs\spo\controller\valdator
 Hiding internal error and exception implemented with the returning an object of ApiError for the client with the meaningful error code (based on imaginary agreement)
 In spo\src\main\java\com\abs\spo\exception
