@@ -13,14 +13,14 @@ import java.util.Arrays;
 @RoomValidity
 public class WorkforceRequestDTO {
 
-    int[]  rooms;
+    private int[]  rooms;
     @NotNull
     @Positive
     @Min(1)
-    int senior;
+    private int senior;
     @NotNull
     @PositiveOrZero
-    int junior;
+    private int junior;
 
     public WorkforceRequestDTO(int[] rooms, int senior, int junior) {
         this.rooms = rooms;

@@ -11,13 +11,13 @@ import org.springframework.http.HttpStatus;
  *
  */
 public class ApiError {
-    HttpStatus httpStatus;
-    int httpStatusCode;
+    private HttpStatus httpStatus;
+    private int httpStatusCode;
     /**
      * The meaningful error code based on agreement with Api Client
      */
-    int internalErrorCode;
-    String message;
+    private int internalErrorCode;
+    private String message;
 
     public ApiError(HttpStatus httpStatus,int httpStatusCode, int internalErrorcode, String message) {
         this.httpStatus = httpStatus;

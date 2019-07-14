@@ -6,7 +6,6 @@ import com.abs.spo.exception.NoSolutionNotFoundException;
 import com.abs.spo.model.WorkforceAssignee;
 import com.google.gson.Gson;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,11 +38,7 @@ public class WorkforceAssignerControllerTest {
     public void isRunning() throws URISyntaxException {
         final String baseUrl = "http://localhost:"+randomServerPort+"/test";
         URI uri = new URI(baseUrl);
-        HttpHeaders headers = new HttpHeaders();
-        //HttpEntity<Employee> request = new HttpEntity<>(employee, headers);
-
         ResponseEntity<String> result = this.restTemplate.getForEntity(uri, String.class);
-
         //Verify bad request and missing header
         Assert.assertEquals(200, result.getStatusCodeValue());
         Assert.assertTrue(result.getBody().contains("OK!!!"));

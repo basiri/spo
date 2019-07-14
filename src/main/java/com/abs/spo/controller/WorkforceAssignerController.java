@@ -58,6 +58,7 @@ public class WorkforceAssignerController {
     @ResponseBody
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ApiError> handleValidationException(MethodArgumentNotValidException exception){
+        logger.error(exception.getMessage());
         return ResponseEntity.badRequest()
                 .body(new ApiError(HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value(),101,"Invalid input data."));
 
@@ -65,6 +66,7 @@ public class WorkforceAssignerController {
     @ResponseBody
     @ExceptionHandler({ResponseStatusException.class})
     public ResponseEntity<ApiError> handleSolutionException(ResponseStatusException exception){
+        logger.error(exception.getMessage());
         return ResponseEntity.badRequest()
                 .body(new ApiError(HttpStatus.BAD_REQUEST,HttpStatus.BAD_REQUEST.value(),102,"No solution could be generated."));
 

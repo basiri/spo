@@ -3,8 +3,8 @@ package com.abs.spo.model;
 
 
 public class WorkforceAssignee {
-    int senior;
-    int junior;
+    private int senior;
+    private int junior;
 
     public WorkforceAssignee(int senior, int junior) {
         this.senior = senior;
