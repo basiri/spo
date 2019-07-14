@@ -9,8 +9,14 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.Assert.*;
@@ -18,36 +24,38 @@ import static org.junit.Assert.*;
 
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
-@RunWith(SpringRunner.class)
-@TestPropertySource("/application.properties")
+
 public class WorkforceOptimizerServiceImplTest {
     private static final Logger logger = LoggerFactory.getLogger(WorkforceOptimizerServiceImplTest.class);
 
-    @Value("${SPO.srRate}")
-    double srRate;
-    @Value("${SPO.jrRate}")
-    double jrRate;
-    @Value("${SPO.depthLevel}")
-    int depthLevel;
-    @Value("${SPO.generationCount}")
-    int revolutionCount;//number of generation
-    @Value("${SPO.maxRoom}")
-    int maxRoomSize;
-    @Value("${SPO.minSeniorInStructure}")
-    int minSenior;
+    private double srRate;
+    private double jrRate;
 
 
     private WorkforceOptimizerService optimizerService ;
 
     @Before
     public void init() {
-        optimizerService= new WorkforceOptimizerServiceImpl();
-        setField(optimizerService,"srRate",srRate);
-        setField(optimizerService,"jrRate",jrRate);
-        setField(optimizerService,"depthLevel",depthLevel);
-        setField(optimizerService,"revolutionCount",revolutionCount);
-        setField(optimizerService,"maxRoomSize",maxRoomSize);
-        setField(optimizerService,"minSenior",minSenior);
+
+        try {
+            FileReader reader = new FileReader(new ClassPathResource("application.properties").getFile());
+            Properties p=new Properties();
+            p.load(reader);
+
+            optimizerService= new WorkforceOptimizerServiceImpl();
+            srRate=Double.valueOf(p.getProperty("SPO.srRate"));
+            setField(optimizerService,"srRate",srRate);
+            jrRate=Double.valueOf(p.getProperty("SPO.jrRate"));
+            setField(optimizerService,"jrRate",jrRate);
+            setField(optimizerService,"depthLevel",Integer.valueOf(p.getProperty("SPO.depthLevel")));
+            setField(optimizerService,"revolutionCount",Integer.valueOf(p.getProperty("SPO.generationCount")));
+            setField(optimizerService,"maxRoomSize",Integer.valueOf(p.getProperty("SPO.maxRoom")));
+            setField(optimizerService,"minSenior",Integer.valueOf(p.getProperty("SPO.minSeniorInStructure")));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
