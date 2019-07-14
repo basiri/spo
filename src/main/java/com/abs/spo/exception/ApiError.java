@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
  * clients
  *
  *
- * @author Ali Bassiri
  *
  */
 public class ApiError {

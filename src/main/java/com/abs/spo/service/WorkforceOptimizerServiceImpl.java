@@ -9,10 +9,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
+/**
+ * According to the properties in application.properties this custom Implementation of GA algorithm
+ * find the answer. the response time could be set according to depthLevel and revolutionCount
+ */
 @Service
 public class WorkforceOptimizerServiceImpl implements WorkforceOptimizerService {
     private static final Logger logger = LoggerFactory.getLogger(WorkforceOptimizerServiceImpl.class);
 
+    /**
+     * there is a rate for finding the equivalent number of junior cleaners for a senior cleaner
+     * it's assumed that by specifying the rate for seniors and juniors we can find the solution
+     * the value could be set in application.properties
+     */
     @Value("${SPO.srRate}")
     double srRate;
     @Value("${SPO.jrRate}")
@@ -30,14 +40,10 @@ public class WorkforceOptimizerServiceImpl implements WorkforceOptimizerService 
     @Override
     public WorkforceAssignee[] customGASolution(WorkforceRequestDTO dto)
             throws NoSolutionNotFoundException {
-        //TODO Log
-
-        // population initialization
-        int iteration= revolutionCount;//initiate number of revolution in GA algorithm
 
         Gene bestGene= createNewGene(dto);
+        int iteration= revolutionCount;//initiate number of revolution in GA algorithm
         while (iteration > 0) {
-
             //Creating a new gene
             Gene gene = createNewGene(dto);
             if (gene!=null) {
@@ -56,6 +62,7 @@ public class WorkforceOptimizerServiceImpl implements WorkforceOptimizerService 
             logger.info(bestGene.toString());
             return bestGene.getAssignees();
         }else {
+            logger.error("No solution found");
             throw new NoSolutionNotFoundException("no answer found");
         }
     }
@@ -85,6 +92,9 @@ public class WorkforceOptimizerServiceImpl implements WorkforceOptimizerService 
 
     }
 
+    /**
+     * Calculates fitness based on minimum cleaners in the structure
+     */
     // for future use for changing the fitness calculation and adding more factors
     private int geneFitnessCalculator(WorkforceAssignee result) {
         return result.getSenior()+result.getJunior();

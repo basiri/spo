@@ -5,23 +5,14 @@ import com.abs.spo.exception.NoSolutionNotFoundException;
 import com.abs.spo.model.WorkforceAssignee;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.Assert.*;
-
-
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
 
@@ -34,6 +25,10 @@ public class WorkforceOptimizerServiceImplTest {
 
     private WorkforceOptimizerService optimizerService ;
 
+    /**
+     * reads application.properties and using reflection set the needed values for the service
+     * by changing application.properties there is no need to change the test file
+     */
     @Before
     public void init() {
 
@@ -60,8 +55,11 @@ public class WorkforceOptimizerServiceImplTest {
     }
 
 
-    //test for 3 structures and enough workers
-    // Should be at least one senior in each structure
+    /**
+     *      test for 3 structures and enough workers
+     *      Should be at least one senior in each structure
+     */
+
     @Test
     public void getSolutionWithTwoStructureAndExactNumberOfWorker() {
         int[] rooms= {(int)(srRate*3+jrRate*2),(int)(srRate*2+jrRate*1)};
@@ -81,8 +79,12 @@ public class WorkforceOptimizerServiceImplTest {
 
         }
     }
-    //test for 3 structures and enough workers
-    // Should be at least one senior in each structure
+
+    /**
+     *      test for 3 structures and enough workers
+     *      Should be at least one senior in each structure
+     */
+
     @Test
     public void getSolutionWithThreeStructureAndEnoughWorker() {
         int[] rooms= {35,21,17};
@@ -105,8 +107,11 @@ public class WorkforceOptimizerServiceImplTest {
         }
     }
 
-    //test for 2 structures and enough workers
-    // Should be at least one senior in each structure
+    /**
+     *     test for 2 structures and enough workers
+     *     Should be at least one senior in each structure
+     */
+
     @Test
     public void getSolutionWithTwoStructureAndEnoughWorker() {
         int[] rooms= {24,28};
@@ -127,8 +132,10 @@ public class WorkforceOptimizerServiceImplTest {
         }
     }
 
-    //test for 1 structures and enough workers
-    // Should be at least one senior in each structure
+    /**
+     *     test for 1 structures and enough workers
+     *     Should be at least one senior in each structure
+     */
     @Test
     public void getSolutionWithOneStructureAndEnoughWorker() {
         int[] rooms= {36};
@@ -148,9 +155,11 @@ public class WorkforceOptimizerServiceImplTest {
         }
     }
 
-    //test for 1 structure and Not enough workers
-    // Should be at least one senior in each structure
-    @Test //(expected = NoSolutionNotFoundException.class)
+    /**
+     *     test for 1 structure and Not enough workers
+     *     Should be at least one senior in each structure
+     */
+    @Test
     public void getSolutionWithOneStructureAndNotEnoughWorker() {
         int[] rooms = {37};
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms, 2, 2);
@@ -158,9 +167,12 @@ public class WorkforceOptimizerServiceImplTest {
         assertThatThrownBy(() -> optimizerService.customGASolution(dto))
         .isInstanceOf(NoSolutionNotFoundException.class);
     }
-    //test for some structures and Not enough workers
-    // Should be at least one senior in each structure
-    @Test //(expected = NoSolutionNotFoundException.class)
+
+    /**
+     *     test for some structures and Not enough workers
+     *     Should be at least one senior in each structure
+     */
+    @Test
     public void getSolutionWithNotEnoughSenior() {
         int[] rooms = {37,16};
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms, 1, 20);

@@ -10,6 +10,12 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Arrays;
 
+
+/**
+ * Input DTO for the controller
+ * Has validity check
+ * Room Validity : 1 < room-number<=100
+ */
 @RoomValidity
 public class WorkforceRequestDTO {
 

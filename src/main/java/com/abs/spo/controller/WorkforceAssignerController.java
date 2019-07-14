@@ -21,7 +21,6 @@ import javax.validation.Valid;
  * Has  path /test GET for validating running server
  * Has  path /assign POST with json request body
  *
- * @author Ali Bassiri
  *
  */
 @RestController

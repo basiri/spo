@@ -1,7 +1,9 @@
 package com.abs.spo.model;
 
 
-
+/**
+ * for each structure WorkForceAssignee indicates number of senior ans junior cleaners
+ */
 public class WorkforceAssignee {
     private int senior;
     private int junior;

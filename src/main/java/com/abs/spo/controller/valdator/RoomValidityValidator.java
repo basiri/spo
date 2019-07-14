@@ -5,6 +5,9 @@ import com.abs.spo.controller.dto.WorkforceRequestDTO;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Custom validity implementation for requestDTO
+ */
 public class RoomValidityValidator implements ConstraintValidator<RoomValidity, WorkforceRequestDTO> {
     @Override
     public void initialize(RoomValidity constraintAnnotation) {
