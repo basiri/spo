@@ -28,8 +28,12 @@ import javax.validation.Valid;
 public class WorkforceAssignerController {
     private static final Logger logger = LoggerFactory.getLogger(WorkforceAssignerController.class);
 
-    @Autowired
+
     private WorkforceOptimizerService optimizerService;
+
+    public WorkforceAssignerController(WorkforceOptimizerService optimizerService) {
+        this.optimizerService = optimizerService;
+    }
 
     @GetMapping("/test")
     public @ResponseBody  String isRunning(){
@@ -41,7 +45,7 @@ public class WorkforceAssignerController {
     public WorkforceAssignee[] workforceAssign(@RequestBody @Valid WorkforceRequestDTO dto ){
 
         try {
-            return optimizerService.getSolution( dto);
+            return optimizerService.customGASolution( dto);
         } catch (NoSolutionNotFoundException e) {
             //e.printStackTrace();
             logger.info("State:" + this.getClass().getName() +",for the imput"+ dto.toString()+","+ e.getMessage());

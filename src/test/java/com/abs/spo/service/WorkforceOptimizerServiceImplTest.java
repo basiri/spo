@@ -60,9 +60,8 @@ public class WorkforceOptimizerServiceImplTest {
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms,5,3);
         WorkforceAssignee[] assignees = null;
         try {
-             assignees= optimizerService.getSolution(dto);
+             assignees= optimizerService.customGASolution(dto);
         } catch (NoSolutionNotFoundException e) {
-
             e.printStackTrace();
         }
         assertEquals(assignees.length,2);
@@ -82,7 +81,7 @@ public class WorkforceOptimizerServiceImplTest {
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms,10,6);
         WorkforceAssignee[] assignees = null;
         try {
-             assignees= optimizerService.getSolution(dto);
+             assignees= optimizerService.customGASolution(dto);
         } catch (NoSolutionNotFoundException e) {
             //e.printStackTrace();
             logger.info("State =" + this.getClass().getName()+", Message: "+ e.getMessage());
@@ -106,7 +105,7 @@ public class WorkforceOptimizerServiceImplTest {
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms,11,6);
         WorkforceAssignee[] assignees = null;
         try {
-            assignees= optimizerService.getSolution(dto);
+            assignees= optimizerService.customGASolution(dto);
         } catch (NoSolutionNotFoundException e) {
             e.printStackTrace();
         }
@@ -128,7 +127,7 @@ public class WorkforceOptimizerServiceImplTest {
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms,2,2);
         WorkforceAssignee[] assignees = null;
         try {
-            assignees= optimizerService.getSolution(dto);
+            assignees= optimizerService.customGASolution(dto);
         } catch (NoSolutionNotFoundException e) {
             e.printStackTrace();
         }
@@ -148,7 +147,7 @@ public class WorkforceOptimizerServiceImplTest {
         int[] rooms = {37};
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms, 2, 2);
 
-        assertThatThrownBy(() -> optimizerService.getSolution(dto))
+        assertThatThrownBy(() -> optimizerService.customGASolution(dto))
         .isInstanceOf(NoSolutionNotFoundException.class);
     }
     //test for some structures and Not enough workers
@@ -158,7 +157,7 @@ public class WorkforceOptimizerServiceImplTest {
         int[] rooms = {37,16};
         WorkforceRequestDTO dto = new WorkforceRequestDTO(rooms, 1, 20);
         final WorkforceAssignee[][] assignees = {null};
-        assertThatThrownBy(() -> optimizerService.getSolution(dto))
+        assertThatThrownBy(() -> optimizerService.customGASolution(dto))
         .isInstanceOf(NoSolutionNotFoundException.class);
     }
 }

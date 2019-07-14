@@ -5,5 +5,5 @@ import com.abs.spo.exception.NoSolutionNotFoundException;
 import com.abs.spo.model.WorkforceAssignee;
 
 public interface WorkforceOptimizerService {
-    WorkforceAssignee[] getSolution(WorkforceRequestDTO dto) throws NoSolutionNotFoundException;
+    WorkforceAssignee[] customGASolution(WorkforceRequestDTO dto) throws NoSolutionNotFoundException;
 }

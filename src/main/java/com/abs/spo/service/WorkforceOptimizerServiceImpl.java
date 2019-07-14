@@ -2,6 +2,7 @@ package com.abs.spo.service;
 
 import com.abs.spo.controller.dto.WorkforceRequestDTO;
 import com.abs.spo.exception.NoSolutionNotFoundException;
+import com.abs.spo.model.Gene;
 import com.abs.spo.model.WorkforceAssignee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,56 +28,66 @@ public class WorkforceOptimizerServiceImpl implements WorkforceOptimizerService 
 
 
     @Override
-    public WorkforceAssignee[] getSolution(WorkforceRequestDTO dto)
+    public WorkforceAssignee[] customGASolution(WorkforceRequestDTO dto)
             throws NoSolutionNotFoundException {
         //TODO Log
 
         // population initialization
-        WorkforceAssignee[] results = new WorkforceAssignee[dto.getRooms().length];
-        WorkforceAssignee[] bestResult = new WorkforceAssignee[dto.getRooms().length];
+        int iteration= revolutionCount;//initiate number of revolution in GA algorithm
 
-        int bestFitness=maxRoomSize;//initial the worst answer
-        int iteration= revolutionCount;
+        Gene bestGene= createNewGene(dto);
         while (iteration > 0) {
-            int fitness = 0;//the variable for measuring fitness value of each chromosome.
-            int remainingS = dto.getSenior();
-            int remainingJ = dto.getJunior();
-            boolean validGene = true;
 
-            for (int i = 0; i < dto.getRooms().length; i++) {
-                results[i] = getPossibleSeniorJunior(dto.getRooms()[i], remainingS, remainingJ, depthLevel);
-                if (results[i] != null) {
-                    remainingS = remainingS - results[i].getSenior();
-                    remainingJ = remainingJ - results[i].getJunior();
-                    fitness += results[i].getSenior()+results[i].getJunior();
-
-                } else {
-                    validGene = false;
+            //Creating a new gene
+            Gene gene = createNewGene(dto);
+            if (gene!=null) {
+                if(bestGene==null){
+                    bestGene=gene;//could not initialize
+                }else{
+                    //Comparing to bestGene and replacing if the bestGene is not the best
+                    bestGene= (bestGene.getFitness() > gene.getFitness())?gene:bestGene;
                 }
-            }
-
-            if (fitness < bestFitness && validGene) {
-                bestFitness = fitness;
-                for (int i = 0; i < dto.getRooms().length; i++) {
-                    bestResult[i] = new WorkforceAssignee(results[i].getSenior(), results[i].getJunior());
-                }
-                for (WorkforceAssignee result : bestResult) {
-
-                }
-
             }
             iteration--;
         }
 
         //at least there is one solution
-        if (bestFitness < maxRoomSize) {
-            for (WorkforceAssignee result : bestResult) {
-                logger.info("{senior:" + result.getSenior() + " junior:" + result.getJunior()
-                        + " Fitness: " + result.getSenior()+result.getJunior() + "}, ");
-            }
-            return bestResult;
+        if (bestGene!=null) {
+            logger.info(bestGene.toString());
+            return bestGene.getAssignees();
+        }else {
+            throw new NoSolutionNotFoundException("no answer found");
         }
-        throw new NoSolutionNotFoundException("no answer found");
+    }
+
+    private Gene createNewGene(WorkforceRequestDTO dto) {
+        int fitness = 0;//the variable for measuring fitness value of each chromosome.
+        int remainingS = dto.getSenior();
+        int remainingJ = dto.getJunior();
+        boolean validGene = true;
+        WorkforceAssignee[] assignees = new WorkforceAssignee[dto.getRooms().length];
+        for (int i = 0; i < dto.getRooms().length; i++) {
+            assignees[i] = getPossibleSeniorJunior(dto.getRooms()[i], remainingS, remainingJ, depthLevel);
+            // Fitness calculation of the answer
+            if(assignees[i]==null){
+                validGene=false;
+            }else{
+                fitness+=geneFitnessCalculator(assignees[i]);
+                remainingS = remainingS - assignees[i].getSenior();
+                remainingJ = remainingJ - assignees[i].getJunior();
+            }
+        }
+        if (validGene){
+            return new Gene(assignees,fitness);
+        }else{
+            return null;
+        }
+
+    }
+
+    // for future use for changing the fitness calculation and adding more factors
+    private int geneFitnessCalculator(WorkforceAssignee result) {
+        return result.getSenior()+result.getJunior();
     }
 
     private WorkforceAssignee getPossibleSeniorJunior(int room, int maxSenior,
