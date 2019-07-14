@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,9 +34,6 @@ public class WorkforceAssignerControllerTest {
     @LocalServerPort
     int randomServerPort;
 
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void isRunning() throws URISyntaxException {
@@ -49,7 +46,7 @@ public class WorkforceAssignerControllerTest {
 
         //Verify bad request and missing header
         Assert.assertEquals(200, result.getStatusCodeValue());
-        Assert.assertEquals(true, result.getBody().contains("OK!!!"));
+        Assert.assertTrue(result.getBody().contains("OK!!!"));
     }
 
 
